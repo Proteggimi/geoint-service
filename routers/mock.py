@@ -193,7 +193,7 @@ async def mock_get_scene(scene_id: str):
     )
 
 
-@router.post("/scenes/search", response_model=MockSearchResponse)
+@router.post("/search", response_model=MockSearchResponse)
 async def mock_search_scenes_post(
     aoi: dict,
     start_date: Optional[datetime] = None,
@@ -205,6 +205,7 @@ async def mock_search_scenes_post(
     """
     Mock scene search with AOI polygon.
     Accepts same format as real /scenes/search endpoint.
+    Works when mounted at /scenes prefix -> /scenes/search
     """
     # Extract center from AOI polygon
     if "coordinates" in aoi:

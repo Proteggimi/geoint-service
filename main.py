@@ -110,9 +110,14 @@ async def log_requests(request: Request, call_next):
 
 # Include routers based on mode
 if settings.lite_mode:
-    # Lite mode - only mock endpoints for testing
+    # Lite mode - mock endpoints for testing
+    # Include under /mock for explicit access
     app.include_router(mock.router, prefix="/mock", tags=["Mock Data"])
-    logger.info("Running in LITE MODE - mock endpoints enabled")
+    # Also include under standard paths so frontend works without changes
+    app.include_router(mock.router, prefix="/scenes", tags=["Scenes (Mock)"])
+    app.include_router(mock.router, prefix="/analysis", tags=["Analysis (Mock)"])
+    app.include_router(mock.router, prefix="/detections", tags=["Detections (Mock)"])
+    logger.info("Running in LITE MODE - mock endpoints enabled at /mock, /scenes, /analysis, /detections")
 else:
     # Full mode - all real endpoints
     app.include_router(scenes.router, prefix="/scenes", tags=["Scenes"])
