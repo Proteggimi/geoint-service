@@ -1,6 +1,5 @@
 """
 API Routers for GEOINT Service
+Routers are imported explicitly in main.py based on lite_mode setting
 """
-from . import scenes, tiles, analysis, detections, providers, aois, sar
-
-__all__ = ["scenes", "tiles", "analysis", "detections", "providers", "aois", "sar"]
+# Do not import routers here to avoid dependency issues in lite mode
