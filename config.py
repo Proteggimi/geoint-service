@@ -83,8 +83,15 @@ class Settings(BaseSettings):
     detection_confidence: float = 0.25
     detection_iou_threshold: float = 0.45
 
-    # CORS
-    cors_origins: list[str] = ["http://localhost:3000", "http://localhost:5173"]
+    # CORS - accepts comma-separated string or JSON array
+    cors_origins: str = "http://localhost:3000,http://localhost:5173"
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        """Parse CORS origins from string or keep as list"""
+        if isinstance(self.cors_origins, list):
+            return self.cors_origins
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
     # PHP Backend Integration
     php_backend_url: str = "http://localhost:8080"
