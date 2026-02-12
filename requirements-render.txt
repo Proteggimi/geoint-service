@@ -1,25 +1,26 @@
 # Requirements for Render.com deployment (lite mode)
-# Optimized for free tier - 512MB RAM limit
+# Optimized for free tier - minimal dependencies
 
 # FastAPI and server
 fastapi==0.109.2
 uvicorn[standard]==0.27.1
 python-multipart==0.0.9
 
-# Database - PostgreSQL (no PostGIS extensions in lite mode)
-asyncpg==0.29.0
+# Database - lightweight
+aiosqlite==0.19.0
 sqlalchemy[asyncio]==2.0.25
-aiosqlite==0.19.0  # For SQLite fallback in lite mode
 
-# Geospatial - lightweight only
-pyproj==3.6.1
-shapely==2.0.2
+# Geospatial - use pre-built wheels
+shapely>=2.0.0
+pyproj>=3.6.0
 geojson==3.1.0
+
+# STAC client for satellite catalog
 pystac-client==0.7.5
 
 # Image processing - lightweight
-numpy==1.26.3
-Pillow==10.2.0
+numpy>=1.26.0
+Pillow>=10.2.0
 
 # HTTP client
 httpx==0.26.0
