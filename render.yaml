@@ -1,0 +1,39 @@
+# render.yaml - Configuration for Render.com deployment
+# Documentation: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: geoint-service
+    runtime: python
+    region: frankfurt  # EU region
+    plan: free
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: LITE_MODE
+        value: "true"
+      - key: DEBUG
+        value: "true"
+      - key: CORS_ORIGINS
+        value: "https://test.osintnews.it,https://desk.osintnews.it,http://localhost:3000"
+      - key: PYTHON_VERSION
+        value: "3.11.7"
+      # Database - Will be set when Render PostgreSQL is created
+      - key: DATABASE_URL
+        fromDatabase:
+          name: geoint-db
+          property: connectionString
+      # Optional: Sentinel Hub credentials (user adds later)
+      - key: SENTINEL_HUB_CLIENT_ID
+        sync: false
+      - key: SENTINEL_HUB_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: geoint-db
+    plan: free
+    region: frankfurt
+    postgresMajorVersion: 15
+    # Note: PostGIS extension must be enabled manually after creation
+    # Run: CREATE EXTENSION IF NOT EXISTS postgis;
